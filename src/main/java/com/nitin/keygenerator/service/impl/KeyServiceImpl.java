@@ -26,7 +26,7 @@ public class KeyServiceImpl implements KeyService {
   private KeyRepository keyRepository;
 
   @Override
-  public void generateKeys(int numberOfKeys) {
+  public int generateKeys(int numberOfKeys) {
     Set<String> uniqueKeys = new HashSet<>();
     while (uniqueKeys.size() != numberOfKeys) {
       uniqueKeys.add(RandomStringUtils.randomAlphanumeric(7));
@@ -35,11 +35,18 @@ public class KeyServiceImpl implements KeyService {
     BulkWriteResult bulkWriteResult = keyRepository.insertKeys(uniqueKeys);
 
     log.info("New keys added: {}", bulkWriteResult.getUpserts().size());
+
+    return bulkWriteResult.getUpserts().size();
   }
 
   @Override
   public String getUnusedKeyAndMarkUsed() {
     Key key = keyRepository.getUnusedKeyAndMarkUsed();
+
+    if (Objects.isNull(key)) {
+      return null;
+    }
+
     return key.getKey();
   }
 

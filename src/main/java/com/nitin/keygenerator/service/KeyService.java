@@ -9,13 +9,14 @@ public interface KeyService {
    * Generate the specified number of keys to store in key db
    *
    * @param numberOfKeys
+   * @return
    */
-  void generateKeys(int numberOfKeys);
+  int generateKeys(int numberOfKeys);
 
   /**
    * Get an unused key and mark it as used in key db
    *
-   * @return
+   * @return null if unique key not found
    */
   String getUnusedKeyAndMarkUsed();
 
